@@ -112,16 +112,19 @@ const popup = document.getElementById("popup");
 const music = document.getElementById("music");
 
 const lines = [
-"Booting LoveOS v1.0...",
-"User detected: You ❤️",
+"Booting BirthdayOS v2.0... 🎂",
+"User detected: Birthday Star ✨",
 "Connecting to HeartServer...",
 "Access granted 💖",
+"Compiling surprises...",
 "Loading memories...",
-"Inside joke loaded: Hoodie permanently stolen 😄",
-"Bug report: Missing You 24/7 🥺",
-"Compiling emotions...",
+"Best moments loaded: Infinite ❤️",
+"Gifts detected: Happiness, Love & Memories  🎁",
+"Health report: Missing You 24/7 🥺",
+"Cake.exe successfully installed 🍰",
 "Build successful ✔",
-"Running foreverWithYou.exe"
+"Running HappyBirthdayForever.exe"
+
 ];
 
 let i = 0;
@@ -152,7 +155,8 @@ function typeLine(){
 function finalQuestion(){
  let q = document.createElement("div");
  q.className="pink";
- q.innerText="System requires confirmation: You, will you be my Valentine?";
+ 
+ q.innerText="System requires confirmation: You, Hey You, today is all about your smile 💖";
  terminal.appendChild(q);
 
 
@@ -222,11 +226,12 @@ function countdown(){
  terminal.appendChild(d);
 
  setInterval(()=>{
-   const vday=new Date("Feb 14, 2026");
    const now=new Date();
-   const diff=vday-now;
-   const days=Math.floor(diff/(1000*60*60*24));
-   d.innerText=`Countdown to Valentine's Day: ${days} days 💘`;
+   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+   const vday = new Date(2026, 5, 30); // June 30, 2026
+   const diff = vday - today;
+   const days = Math.max(Math.ceil(diff / (1000*60*60*24)), 0);
+   d.innerText = `Countdown to Cake Cutting: Loading... ⏳🍰 ${days} days`;
  },1000);
 }
 
@@ -243,11 +248,11 @@ function stats(){
 }
 
 const photos = [
-"https://wallpapers.com/images/hd/cute-aesthetic-couple-pictures-ogen450z9cowj1tr.jpg",
-"https://i.pinimg.com/736x/6b/ea/42/6bea425e866e9490dd4989abb6051728.jpg",
-"https://i.pinimg.com/236x/29/7b/51/297b51e7c20700b8345df0b31ba3a20c.jpg",
-"https://i.pinimg.com/236x/9f/e9/8b/9fe98b44be84131af8a3020915ed4552.jpg",
-"https://wallpapers.com/images/hd/cute-aesthetic-couple-pictures-3620u38wxts989y3.jpg"
+"img/1.jpeg",
+"img/2.jpeg",
+"img/3.jpeg",
+"img/4.jpeg",
+"img/5.jpeg"
 ];
 
 let current = 0;
