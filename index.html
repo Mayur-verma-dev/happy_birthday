@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>You ❤️ Love Terminal</title>
+
+<style>
+
+  
+*{box-sizing:border-box}
+
+body{
+background:black;
+color:#00ff88;
+font-family:monospace;
+margin:0;
+padding:10px;
+overflow-x:hidden;
+}
+
+.terminal{
+width:100%;
+max-width:600px;
+margin:auto;
+margin-top:20px;
+border:2px solid #00ff88;
+padding:15px;
+box-shadow:0 0 15px #00ff88;
+font-size:14px;
+}
+
+.pink{color:#ff69c9}
+
+button{
+width:100%;
+background:black;
+color:#00ff88;
+border:1px solid #00ff88;
+padding:12px;
+margin-top:10px;
+font-size:16px;
+cursor:pointer;
+border-radius:6px;
+}
+
+button:hover{
+background:#00ff88;
+color:black;
+}
+
+.hearts,.firework{
+position:fixed;
+font-size:20px;
+animation:float 2s linear forwards;
+pointer-events:none;
+}
+
+@keyframes float{
+0%{opacity:1;transform:translateY(0)}
+100%{opacity:0;transform:translateY(-180px)}
+}
+
+.popup{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:90%;
+max-width:320px;
+background:#050505;
+border:2px solid #ff69c9;
+padding:15px;
+display:none;
+color:white;
+text-align:center;
+border-radius:10px;
+}
+
+.popup img{
+width:100%;
+border-radius:10px;
+margin:10px 0;
+}
+
+.countdown,.stats{
+margin-top:15px;
+font-size:14px;
+}
+</style>
+</head>
+<body>
+
+<div class="terminal" id="terminal"></div>
+
+<div class="popup" id="popup">
+<h3>Our Memories ❤️</h3>
+<img id="memoryImg">
+<p>Every moment with You feels magical 💕</p>
+<button onclick="nextPhoto()">Next Memory 💖</button>
+<button onclick="closePopup()">Close</button>
+</div>
+
+<audio id="music" preload="auto">
+  <source src="song.mp3" type="audio/mpeg">
+</audio>
+
+
+<script>
+const terminal = document.getElementById("terminal");
+const popup = document.getElementById("popup");
+const music = document.getElementById("music");
+
+const lines = [
+"Booting LoveOS v1.0...",
+"User detected: You ❤️",
+"Connecting to HeartServer...",
+"Access granted 💖",
+"Loading memories...",
+"Inside joke loaded: Hoodie permanently stolen 😄",
+"Bug report: Missing You 24/7 🥺",
+"Compiling emotions...",
+"Build successful ✔",
+"Running foreverWithYou.exe"
+];
+
+let i = 0;
+
+function typeLine(){
+ if(i < lines.length){
+   let div = document.createElement("div");
+   terminal.appendChild(div);
+   let text = lines[i];
+   let j = 0;
+
+   let interval = setInterval(()=>{
+     if(j < text.length){
+       div.innerHTML += text[j];
+       j++;
+     } else {
+       clearInterval(interval);
+       i++;
+       setTimeout(typeLine,400);
+     }
+   },40);
+ }
+ else{
+   finalQuestion();
+ }
+}
+
+function finalQuestion(){
+ let q = document.createElement("div");
+ q.className="pink";
+ q.innerText="System requires confirmation: You, will you be my Valentine?";
+ terminal.appendChild(q);
+
+
+let yes = document.createElement("button");
+yes.innerText = "YES ❤️";
+yes.addEventListener("click", function(){
+    music.play().then(()=>{
+        celebrate();
+    }).catch(err=>{
+        alert("Turn volume up and tap again ❤️");
+    });
+});
+terminal.appendChild(yes);
+
+
+ let mem = document.createElement("button");
+ mem.innerText="Open Memories 📸";
+ mem.onclick = ()=> popup.style.display="block";
+ terminal.appendChild(mem);
+
+ countdown();
+ stats();
+}
+
+function startMusic(){
+ music.currentTime = 0;
+ music.volume = 1;
+ music.muted = false;
+
+ const playPromise = music.play();
+ if(playPromise !== undefined){
+   playPromise.catch(()=>{});
+ }
+}
+
+function celebrate(){
+
+ for(let i=0;i<40;i++){
+   let h=document.createElement("div");
+   h.className="hearts";
+   h.innerText="💖";
+   h.style.left=Math.random()*100+"vw";
+   h.style.bottom="0";
+   document.body.appendChild(h);
+   setTimeout(()=>h.remove(),2000);
+ }
+
+ for(let i=0;i<30;i++){
+   let f=document.createElement("div");
+   f.className="firework";
+   f.innerText="✨";
+   f.style.left=Math.random()*100+"vw";
+   f.style.top=Math.random()*100+"vh";
+   document.body.appendChild(f);
+   setTimeout(()=>f.remove(),1500);
+ }
+
+ let msg=document.createElement("div");
+ msg.className="pink";
+ msg.innerText="Love confirmed ❤️ Forever mode activated with You!";
+ terminal.appendChild(msg);
+}
+
+function countdown(){
+ const d=document.createElement("div");
+ d.className="countdown";
+ terminal.appendChild(d);
+
+ setInterval(()=>{
+   const vday=new Date("Feb 14, 2026");
+   const now=new Date();
+   const diff=vday-now;
+   const days=Math.floor(diff/(1000*60*60*24));
+   d.innerText=`Countdown to Valentine's Day: ${days} days 💘`;
+ },1000);
+}
+
+function stats(){
+ let s=document.createElement("div");
+ s.className="stats";
+ s.innerHTML=`
+❤️ Love uptime: 100%<br>
+💬 Messages sent: Infinite<br>
+😍 Happiness level: MAX<br>
+💍 Status: Forever with You
+`;
+ terminal.appendChild(s);
+}
+
+const photos = [
+"https://wallpapers.com/images/hd/cute-aesthetic-couple-pictures-ogen450z9cowj1tr.jpg",
+"https://i.pinimg.com/736x/6b/ea/42/6bea425e866e9490dd4989abb6051728.jpg",
+"https://i.pinimg.com/236x/29/7b/51/297b51e7c20700b8345df0b31ba3a20c.jpg",
+"https://i.pinimg.com/236x/9f/e9/8b/9fe98b44be84131af8a3020915ed4552.jpg",
+"https://wallpapers.com/images/hd/cute-aesthetic-couple-pictures-3620u38wxts989y3.jpg"
+];
+
+let current = 0;
+
+function nextPhoto(){
+ document.getElementById("memoryImg").src = photos[current];
+ current = (current + 1) % photos.length;
+}
+
+function closePopup(){
+ popup.style.display="none";
+}
+
+nextPhoto();
+typeLine();
+</script>
+
+</body>
+</html>
