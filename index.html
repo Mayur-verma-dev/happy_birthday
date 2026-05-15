@@ -87,6 +87,34 @@ margin:10px 0;
 margin-top:15px;
 font-size:14px;
 }
+
+.audio-prompt{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.95);
+border:2px solid #00ff88;
+padding:20px;
+color:#00ff88;
+text-align:center;
+border-radius:12px;
+box-shadow:0 0 20px rgba(0,255,136,0.3);
+z-index:9999;
+}
+
+.audio-prompt button{
+width:auto;
+padding:12px 20px;
+font-size:16px;
+}
+
+.audio-prompt p{
+margin-top:10px;
+font-size:14px;
+color:#bbb;
+}
 </style>
 </head>
 <body>
@@ -101,18 +129,29 @@ font-size:14px;
 <button onclick="closePopup()">Close</button>
 </div>
 
-<audio id="music" preload="auto">
-  <source src="bg-song.mpeg" type="audio/mpeg">
+<div class="audio-prompt" id="audioPrompt">
+  <button id="audioStartBtn">Tap Here ❤️🎵</button>
+  <p>A small click can create big moments.</p>
+</div>
+
+<audio id="firstMusic" preload="auto" autoplay playsinline>
+  <source src="f-song.mpeg" type="audio/mpeg">
 </audio>
 
+<audio id="secondMusic" preload="auto">
+  <source src="bg-song.mpeg" type="audio/mpeg">
+</audio>
 
 <script>
 const terminal = document.getElementById("terminal");
 const popup = document.getElementById("popup");
-const music = document.getElementById("music");
+const audioPrompt = document.getElementById("audioPrompt");
+const audioStartBtn = document.getElementById("audioStartBtn");
+const firstMusic = document.getElementById("firstMusic");
+const secondMusic = document.getElementById("secondMusic");
 
 const lines = [
-"Booting BirthdayOS v2.0... 🎂",
+"Celebrate Birthday with me ... 🎂",
 "User detected: Birthday Star ✨",
 "Connecting to HeartServer...",
 "Access granted 💖",
@@ -128,6 +167,14 @@ const lines = [
 ];
 
 let i = 0;
+let bootStarted = false;
+
+function startBoot(){
+ if(!bootStarted){
+   bootStarted = true;
+   typeLine();
+ }
+}
 
 function typeLine(){
  if(i < lines.length){
@@ -163,10 +210,13 @@ function finalQuestion(){
 let yes = document.createElement("button");
 yes.innerText = "YES ❤️";
 yes.addEventListener("click", function(){
-    music.play().then(()=>{
-        celebrate();
+    firstMusic.pause();
+    firstMusic.currentTime = 0;
+    secondMusic.currentTime = 0;
+    secondMusic.play().then(()=>{
+      celebrate();
     }).catch(err=>{
-        alert("Turn volume up and tap again ❤️");
+      alert("Turn volume up and tap YES again ❤️");
     });
 });
 terminal.appendChild(yes);
@@ -182,14 +232,35 @@ terminal.appendChild(yes);
 }
 
 function startMusic(){
- music.currentTime = 0;
- music.volume = 1;
- music.muted = false;
+ firstMusic.currentTime = 0;
+ firstMusic.volume = 1;
+ firstMusic.muted = false;
 
- const playPromise = music.play();
+ const playPromise = firstMusic.play();
  if(playPromise !== undefined){
-   playPromise.catch(()=>{});
+   playPromise.then(()=>{
+     if(audioPrompt) audioPrompt.style.display = "none";
+     startBoot();
+   }).catch(()=>{
+     if(audioPrompt) audioPrompt.style.display = "block";
+   });
+ } else {
+   startBoot();
  }
+}
+
+if(audioStartBtn){
+ audioStartBtn.addEventListener("click", ()=>{
+   firstMusic.currentTime = 0;
+   firstMusic.volume = 1;
+   firstMusic.muted = false;
+   firstMusic.play().then(()=>{
+     audioPrompt.style.display = "none";
+     startBoot();
+   }).catch(()=>{
+     alert("Please tap again to start the music.");
+   });
+ });
 }
 
 function celebrate(){
@@ -267,7 +338,7 @@ function closePopup(){
 }
 
 nextPhoto();
-typeLine();
+startMusic();
 </script>
 
 </body>
